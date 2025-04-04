@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRIFY- Scan Fast, Live Smart</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e23744;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #e23744;
+        }
+
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-outline {
+            border: 1px solid #e23744;
+            color: #e23744;
+            background: transparent;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: #e23744;
+            color: white;
+            border: none;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('/api/placeholder/1200/400') center/cover no-repeat;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: rgb(255, 255, 255);
+        }
+
+        /* .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: hsl(55, 23%, 54%);
+            background-image: url("2759484-uhd_3840_2160_30fps.mp4");
+            z-index: 1;
+        } */
+
+        .hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  object-fit: cover;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: hsla(55, 23%, 54%, 0.3); /* Optional overlay tint */
+  z-index: 1;
+}
+
+.hero .content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  padding-top: 20%;
+}
+
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-bar button {
+            padding: 15px 25px;
+            background: #e23744;
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Categories Section */
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            flex: 1 0 150px;
+            max-width: 180px;
+            text-align: center;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-img {
+            height: 120px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .category-title {
+            padding: 15px 10px;
+            font-weight: 500;
+        }
+
+        /* Featured Restaurants */
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .restaurant-img {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .restaurant-info {
+            padding: 15px;
+        }
+
+        .restaurant-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .restaurant-cuisine {
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .restaurant-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            background: #39b54a;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .price {
+            color: #666;
+        }
+
+        /* Collections Section */
+        .collections {
+            margin-bottom: 60px;
+        }
+
+        .collection-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: #e23744 #f0f0f0;
+        }
+
+        .collection-slider::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .collection-slider::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .collection-slider::-webkit-scrollbar-thumb {
+            background-color: #e23744;
+            border-radius: 10px;
+        }
+
+        .collection-card {
+            scroll-snap-align: start;
+            flex: 0 0 300px;
+            height: 250px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .collection-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .collection-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 20px;
+            color: white;
+        }
+
+        .collection-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .collection-places {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* App Promotion */
+        .app-promo {
+            background: linear-gradient(135deg, #e23744, #8b0000);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .app-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .app-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .app-description {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .app-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .app-button {
+            display: flex;
+            align-items: center;
+            background: black;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .app-button span {
+            margin-left: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: #f8f8f8;
+            border-top: 1px solid #eee;
+            padding: 40px 0;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+
+        .footer-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #e23744;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: #e23744;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .social-link:hover {
+            opacity: 0.8;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                padding: 20px 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .auth-buttons {
+                margin-left: auto;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar input {
+                width: 100%;
+            }
+
+            .app-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-section {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">QRIFY</a>
+            
+            <div class="mobile-menu">☰</div>
+            
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Restaurants</a></li>
+                <li><a href="#">Collections</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            
+            <div class="auth-buttons">
+                <button class="btn btn-outline">Log in</button>
+                <button class="btn btn-primary">Sign up</button>
+            </div>
+        </div>
+    </header>
+    <section class="hero">
+        <video autoplay muted loop playsinline class="bg-video">
+          <source src="top-view-of-a-frying-pan-with-vegetables-that-a-cook-moves-free-stock-video-footage-pintod.mp4" type="video/mp4" />
+          Your browser does not support HTML5 video.
+        </video>
+      
+        <div class="hero-overlay"></div> <!-- Optional overlay for tinting -->
+      
+        <div class="hero-content">
+          <h1>Scan Fast, Live Smart</h1>
+          <p>Find the best Techy restaurants, cafés, and bars near you</p>
+          <div class="search-bar">
+            <input type="text" placeholder="Search for restaurants, cuisines, or dishes...">
+            <button>Search</button>
+          </div>
+        </div>
+      </section>
+    <!-- Categories Section -->
+    <section class="container">
+        <h2 class="section-title">Popular Categories</h2>
+        <div class="categories">
+            <div class="category-card">
+                <img src="/api/placeholder/180/120" alt="Pizza" class="category-img">
+                <div class="category-title">Pizza</div>
+            </div>
+            <div class="category-card">
+                <img src="/api/placeholder/180/120" alt="Burger" class="category-img">
+                <div class="category-title">Burger</div>
+            </div>
+            <div class="category-card">
+                <img src="/api/placeholder/180/120" alt="Sushi" class="category-img">
+                <div class="category-title">Sushi</div>
+            </div>
+            <div class="category-card">
+                <img src="/api/placeholder/180/120" alt="Pasta" class="category-img">
+                <div class="category-title">Pasta</div>
+            </div>
+            <div class="category-card">
+                <img src="/api/placeholder/180/120" alt="Dessert" class="category-img">
+                <div class="category-title">Dessert</div>
+            </div>
+            <div class="category-card">
+                <img src="/api/placeholder/180/120" alt="Healthy" class="category-img">
+                <div class="category-title">Healthy</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Restaurants Section -->
+    <section class="container">
+        <h2 class="section-title">Featured Restaurants</h2>
+        <div class="restaurant-grid">
+            <div class="restaurant-card">
+                <img src="/api/placeholder/280/180" alt="Restaurant 1" class="restaurant-img">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Flavor Haven</h3>
+                    <p class="restaurant-cuisine">Italian, Continental</p>
+                    <div class="restaurant-meta">
+                        <div class="rating">4.8 ★</div>
+                        <div class="price">$$$</div>
+                    </div>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <img src="/api/placeholder/280/180" alt="Restaurant 2" class="restaurant-img">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Urban Spice</h3>
+                    <p class="restaurant-cuisine">Indian, Asian</p>
+                    <div class="restaurant-meta">
+                        <div class="rating">4.5 ★</div>
+                        <div class="price">$$</div>
+                    </div>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <img src="/api/placeholder/280/180" alt="Restaurant 3" class="restaurant-img">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Green Garden</h3>
+                    <p class="restaurant-cuisine">Vegan, Healthy</p>
+                    <div class="restaurant-meta">
+                        <div class="rating">4.6 ★</div>
+                        <div class="price">$$</div>
+                    </div>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <img src="/api/placeholder/280/180" alt="Restaurant 4" class="restaurant-img">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Burger Bliss</h3>
+                    <p class="restaurant-cuisine">American, Fast Food</p>
+                    <div class="restaurant-meta">
+                        <div class="rating">4.4 ★</div>
+                        <div class="price">$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections Section -->
+    <section class="collections container">
+        <h2 class="section-title">Popular Collections</h2>
+        <div class="collection-slider">
+            <div class="collection-card">
+                <img src="/api/placeholder/300/250" alt="Collection 1" class="collection-img">
+                <div class="collection-overlay">
+                    <h3 class="collection-title">Best Rooftop Dining</h3>
+                    <p class="collection-places">12 Places</p>
+                </div>
+            </div>
+            <div class="collection-card">
+                <img src="/api/placeholder/300/250" alt="Collection 2" class="collection-img">
+                <div class="collection-overlay">
+                    <h3 class="collection-title">Romantic Dinner Spots</h3>
+                    <p class="collection-places">8 Places</p>
+                </div>
+            </div>
+            <div class="collection-card">
+                <img src="/api/placeholder/300/250" alt="Collection 3" class="collection-img">
+                <div class="collection-overlay">
+                    <h3 class="collection-title">Weekend Brunches</h3>
+                    <p class="collection-places">15 Places</p>
+                </div>
+            </div>
+            <div class="collection-card">
+                <img src="/api/placeholder/300/250" alt="Collection 4" class="collection-img">
+                <div class="collection-overlay">
+                    <h3 class="collection-title">Live Music & Food</h3>
+                    <p class="collection-places">10 Places</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Promotion Section -->
+    <section class="app-promo">
+        <div class="app-content">
+            <h2 class="app-title">Download the FoodFinder App</h2>
+            <p class="app-description">Get the full experience on your mobile device. Order food, track delivery, save your favorites, and more!</p>
+            <div class="app-buttons">
+                <a href="#" class="app-button">
+                    <span>Download on App Store</span>
+                </a>
+                <a href="#" class="app-button">
+                    <span>Get it on Google Play</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3 class="footer-title">FoodFinder</h3>
+                    <p>Find the best food in your area with our curated list of restaurants and cafes.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">f</a>
+                        <a href="#" class="social-link">t</a>
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">ig</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Discover</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Restaurants</a></li>
+                        <li><a href="#">Collections</a></li>
+                        <li><a href="#">Cities</a></li>
+                        <li><a href="#">Popular Cuisines</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">About</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Help</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Report Issue</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 QRIFY. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+
+        // Sample restaurant data
+        const restaurants = [
+            {
+                id: 1,
+                name: "Flavor Haven",
+                cuisine: "Italian, Continental",
+                rating: 4.8,
+                price: "$$$",
+                image: "/api/placeholder/280/180"
+            },
+            {
+                id: 2,
+                name: "Urban Spice",
+                cuisine: "Indian, Asian",
+                rating: 4.5,
+                price: "$$",
+                image: "/api/placeholder/280/180"
+            },
+            {
+                id: 3,
+                name: "Green Garden",
+                cuisine: "Vegan, Healthy",
+                rating: 4.6,
+                price: "$$",
+                image: "/api/placeholder/280/180"
+            },
+            {
+                id: 4,
+                name: "Burger Bliss",
+                cuisine: "American, Fast Food",
+                rating: 4.4,
+                price: "$",
+                image: "/api/placeholder/280/180"
+            },
+            {
+                id: 5,
+                name: "Sushi Palace",
+                cuisine: "Japanese, Sushi",
+                rating: 4.7,
+                price: "$$$",
+                image: "/api/placeholder/280/180"
+            },
+            {
+                id: 6,
+                name: "Taco Town",
+                cuisine: "Mexican, Latin American",
+                rating: 4.3,
+                price: "$$",
+                image: "/api/placeholder/280/180"
+            }
+        ];
+
+        // Functions to load more restaurants or filter by search
+        function createRestaurantCard(restaurant) {
+            return `
+                <div class="restaurant-card">
+                    <img src="${restaurant.image}" alt="${restaurant.name}" class="restaurant-img">
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">${restaurant.name}</h3>
+                        <p class="restaurant-cuisine">${restaurant.cuisine}</p>
+                        <div class="restaurant-meta">
+                            <div class="rating">${restaurant.rating} ★</div>
+                            <div class="price">${restaurant.price}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Search functionality
+        const searchButton = document.querySelector('.search-bar button');
+        const searchInput = document.querySelector('.search-bar input');
+        const restaurantGrid = document.querySelector('.restaurant-grid');
+
+        searchButton.addEventListener('click', function() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            if (searchTerm) {
+                // Filter restaurants by search term
+                const filteredRestaurants = restaurants.filter(restaurant => 
+                    restaurant.name.toLowerCase().includes(searchTerm) || 
+                    restaurant.cuisine.toLowerCase().includes(searchTerm)
+                );
+                
+                // Clear current restaurants
+                restaurantGrid.innerHTML = '';
+                
+                // Add filtered restaurants
+                if (filteredRestaurants.length > 0) {
+                    filteredRestaurants.forEach(restaurant => {
+                        restaurantGrid.innerHTML += createRestaurantCard(restaurant);
+                    });
+                } else {
+                    restaurantGrid.innerHTML = '<p class="text-center w-100">No restaurants found matching your search.</p>';
+                }
+            }
+        });
+
+        // Category filtering
+        const categoryCards = document.querySelectorAll('.category-card');
+        
+        categoryCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const category = this.querySelector('.category-title').textContent;
+                
+                // Filter restaurants by category (simplified example)
+                const filteredRestaurants = restaurants.filter(restaurant => 
+                    restaurant.cuisine.includes(category)
+                );
+                
+                // Update restaurant display
+                restaurantGrid.innerHTML = '';
+                
+                filteredRestaurants.forEach(restaurant => {
+                    restaurantGrid.innerHTML += createRestaurantCard(restaurant);
+                });
+                
+                // If no results
+                if (filteredRestaurants.length === 0) {
+                    restaurantGrid.innerHTML = '<p class="text-center w-100">No restaurants found in this category.</p>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
