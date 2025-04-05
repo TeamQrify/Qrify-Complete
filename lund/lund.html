@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Page</title>
+    <style>
+        .product { margin-bottom: 20px; }
+        .cart-controls { display: flex; align-items: center; gap: 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Product List</h1>
+    <div id="product-list">
+        <!-- Example product -->
+        <div class="product" data-id="1" data-name="Pizza" data-price="10">
+            <span>🍕 Pizza - $10</span>
+            <button onclick="addToCart(this)">Add to Cart</button>
+            <div class="cart-controls hidden">
+                <button onclick="decrementItem(this)">−</button>
+                <span class="quantity">1</span>
+                <button onclick="incrementItem(this)">+</button>
+            </div>
+        </div>
+
+        <!-- Add more products as needed -->
+        <div class="product" data-id="2" data-name="Burger" data-price="5">
+            <span>🍔 Burger - $5</span>
+            <button onclick="addToCart(this)">Add to Cart</button>
+            <div class="cart-controls hidden">
+                <button onclick="decrementItem(this)">−</button>
+                <span class="quantity">1</span>
+                <button onclick="incrementItem(this)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <a href="cart.html">View Cart</a>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+        function updateStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function addToCart(button) {
+            const product = button.closest('.product');
+            const id = product.dataset.id;
+            const name = product.dataset.name;
+            const price = parseFloat(product.dataset.price);
+
+            if (!cart[id]) {
+                cart[id] = { name, price, quantity: 1 };
+            }
+
+            updateStorage();
+
+            button.classList.add('hidden');
+            const controls = product.querySelector('.cart-controls');
+            controls.classList.remove('hidden');
+            controls.querySelector('.quantity').textContent = cart[id].quantity;
+        }
+
+        function incrementItem(button) {
+            const product = button.closest('.product');
+            const id = product.dataset.id;
+            cart[id].quantity++;
+            updateStorage();
+            product.querySelector('.quantity').textContent = cart[id].quantity;
+        }
+
+        function decrementItem(button) {
+            const product = button.closest('.product');
+            const id = product.dataset.id;
+
+            if (cart[id].quantity > 1) {
+                cart[id].quantity--;
+            } else {
+                delete cart[id];
+                product.querySelector('.cart-controls').classList.add('hidden');
+                product.querySelector('button').classList.remove('hidden');
+            }
+
+            updateStorage();
+            const quantitySpan = product.querySelector('.quantity');
+            if (cart[id]) {
+                quantitySpan.textContent = cart[id].quantity;
+            }
+        }
+
+        // Show controls if item is already in cart (on reload)
+        window.onload = function () {
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                const id = product.dataset.id;
+                if (cart[id]) {
+                    product.querySelector('button').classList.add('hidden');
+                    const controls = product.querySelector('.cart-controls');
+                    controls.classList.remove('hidden');
+                    controls.querySelector('.quantity').textContent = cart[id].quantity;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
