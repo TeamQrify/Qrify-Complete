@@ -42,7 +42,7 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
             timer: 2000,
             showConfirmButton: false
         }).then(() => {
-            window.location.href = 'index.html'; // Redirect to homepage
+            window.location.href = 'indexhome.html'; // Redirect to homepage
         });
     } else {
         Swal.fire({
